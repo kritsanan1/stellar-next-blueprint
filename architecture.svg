@@ -1,0 +1,146 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="secondaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1e293b">
+    🏎️ Smart Fuel Station System Architecture
+  </text>
+  
+  <!-- Frontend Layer -->
+  <rect x="50" y="80" width="1100" height="200" fill="url(#primaryGrad)" rx="10" filter="url(#shadow)" opacity="0.1"/>
+  <text x="70" y="110" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#16a34a">Frontend Layer (React + TypeScript + Vite)</text>
+  
+  <!-- Main App Component -->
+  <rect x="80" y="130" width="150" height="60" fill="#ffffff" stroke="#22c55e" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="155" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">App.tsx</text>
+  <text x="155" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Router & Layout</text>
+  
+  <!-- Page Components -->
+  <rect x="260" y="130" width="150" height="60" fill="#ffffff" stroke="#22c55e" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="335" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Index.tsx</text>
+  <text x="335" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Main Payment Flow</text>
+  
+  <!-- Feature Components -->
+  <rect x="440" y="130" width="130" height="60" fill="#ffffff" stroke="#22c55e" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="505" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">FuelAmountSelector</text>
+  <text x="505" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Amount Selection</text>
+  
+  <rect x="590" y="130" width="130" height="60" fill="#ffffff" stroke="#22c55e" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="655" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">QRCodeDisplay</text>
+  <text x="655" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Payment QR & Status</text>
+  
+  <rect x="740" y="130" width="130" height="60" fill="#ffffff" stroke="#22c55e" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="805" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">PaymentSuccess</text>
+  <text x="805" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Success & Dispensing</text>
+  
+  <!-- UI Components -->
+  <rect x="890" y="130" width="130" height="60" fill="#ffffff" stroke="#22c55e" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="955" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">UI Components</text>
+  <text x="955" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Shadcn/ui Library</text>
+  
+  <!-- State Management Layer -->
+  <rect x="50" y="310" width="1100" height="120" fill="url(#secondaryGrad)" rx="10" filter="url(#shadow)" opacity="0.1"/>
+  <text x="70" y="340" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ea580c">State Management & Business Logic</text>
+  
+  <!-- Payment Hook -->
+  <rect x="80" y="360" width="200" height="50" fill="#ffffff" stroke="#f97316" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="180" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">usePaymentSession</text>
+  <text x="180" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Payment State Management</text>
+  
+  <!-- Types -->
+  <rect x="300" y="360" width="150" height="50" fill="#ffffff" stroke="#f97316" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="375" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">fuel.ts</text>
+  <text x="375" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">TypeScript Types</text>
+  
+  <!-- Utils -->
+  <rect x="470" y="360" width="150" height="50" fill="#ffffff" stroke="#f97316" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="545" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">utils.ts</text>
+  <text x="545" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Helper Functions</text>
+  
+  <!-- Design System -->
+  <rect x="640" y="360" width="200" height="50" fill="#ffffff" stroke="#f97316" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="740" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Design System</text>
+  <text x="740" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">CSS Tokens + Tailwind</text>
+  
+  <!-- External Services Layer -->
+  <rect x="50" y="460" width="1100" height="120" fill="#6366f1" rx="10" filter="url(#shadow)" opacity="0.1"/>
+  <text x="70" y="490" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#4f46e5">External Services & APIs</text>
+  
+  <!-- Payment Gateway -->
+  <rect x="80" y="510" width="150" height="50" fill="#ffffff" stroke="#6366f1" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="155" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Payment Gateway</text>
+  <text x="155" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">PromptPay/Bank API</text>
+  
+  <!-- QR Generation -->
+  <rect x="250" y="510" width="150" height="50" fill="#ffffff" stroke="#6366f1" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="325" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">QR Code Library</text>
+  <text x="325" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">qrcode npm package</text>
+  
+  <!-- Hardware Integration -->
+  <rect x="420" y="510" width="150" height="50" fill="#ffffff" stroke="#6366f1" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="495" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Fuel Dispenser</text>
+  <text x="495" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">IoT/Relay Control</text>
+  
+  <!-- Build Tools -->
+  <rect x="590" y="510" width="150" height="50" fill="#ffffff" stroke="#6366f1" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="665" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Vite + TypeScript</text>
+  <text x="665" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Build & Development</text>
+  
+  <!-- Data Flow Arrows -->
+  <!-- App to Index -->
+  <path d="M 230 160 L 260 160" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  
+  <!-- Index to Components -->
+  <path d="M 410 160 L 440 160" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 570 160 L 590 160" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 720 160 L 740 160" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  
+  <!-- Index to State -->
+  <path d="M 335 190 L 180 360" stroke="#f97316" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  
+  <!-- State to External -->
+  <path d="M 180 410 L 155 510" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  <path d="M 240 410 L 325 510" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4b5563" />
+    </marker>
+  </defs>
+  
+  <!-- Data Flow Legend -->
+  <rect x="50" y="610" width="500" height="140" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" rx="5" filter="url(#shadow)"/>
+  <text x="70" y="635" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e293b">🔄 Data Flow Explanation</text>
+  
+  <text x="70" y="660" font-family="Arial, sans-serif" font-size="12" fill="#374151">1. User selects fuel amount → FuelAmountSelector</text>
+  <text x="70" y="680" font-family="Arial, sans-serif" font-size="12" fill="#374151">2. Amount triggers QR generation → QRCodeDisplay</text>
+  <text x="70" y="700" font-family="Arial, sans-serif" font-size="12" fill="#374151">3. Payment session created → usePaymentSession hook</text>
+  <text x="70" y="720" font-family="Arial, sans-serif" font-size="12" fill="#374151">4. QR scanned → Payment Gateway processes transaction</text>
+  <text x="70" y="740" font-family="Arial, sans-serif" font-size="12" fill="#374151">5. Success confirmed → PaymentSuccess → Fuel Dispenser activated</text>
+  
+  <!-- Tech Stack Legend -->
+  <rect x="570" y="610" width="580" height="140" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" rx="5" filter="url(#shadow)"/>
+  <text x="590" y="635" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e293b">🛠️ Technology Stack</text>
+  
+  <text x="590" y="660" font-family="Arial, sans-serif" font-size="12" fill="#374151"><tspan font-weight="bold">Frontend:</tspan> React 18 + TypeScript + Vite + Tailwind CSS</text>
+  <text x="590" y="680" font-family="Arial, sans-serif" font-size="12" fill="#374151"><tspan font-weight="bold">UI Library:</tspan> Shadcn/ui + Lucide React Icons</text>
+  <text x="590" y="700" font-family="Arial, sans-serif" font-size="12" fill="#374151"><tspan font-weight="bold">State:</tspan> React Hooks + Custom Payment Hook</text>
+  <text x="590" y="720" font-family="Arial, sans-serif" font-size="12" fill="#374151"><tspan font-weight="bold">Styling:</tspan> HSL Design System + Semantic Tokens</text>
+  <text x="590" y="740" font-family="Arial, sans-serif" font-size="12" fill="#374151"><tspan font-weight="bold">Integration:</tspan> QR Code Generation + Payment APIs</text>
+</svg>
