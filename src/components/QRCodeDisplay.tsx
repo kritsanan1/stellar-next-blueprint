@@ -3,9 +3,13 @@ import QRCode from 'qrcode';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { QrCode, Clock, CheckCircle, AlertCircle, RotateCcw } from 'lucide-react';
+import { FuelType } from '@/types/fuel';
+import { gsapAnimations } from '@/lib/animations';
 
 interface QRCodeDisplayProps {
   amount: number;
+  fuelType?: FuelType;
+  liters?: number;
   sessionId: string;
   paymentStatus: 'pending' | 'processing' | 'completed' | 'failed';
   timeRemaining: number;
@@ -15,6 +19,8 @@ interface QRCodeDisplayProps {
 
 export function QRCodeDisplay({ 
   amount, 
+  fuelType,
+  liters,
   sessionId, 
   paymentStatus, 
   timeRemaining, 
@@ -22,7 +28,28 @@ export function QRCodeDisplay({
   onRetry 
 }: QRCodeDisplayProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const qrCardRef = useRef<HTMLDivElement>(null);
+  const statusRef = useRef<HTMLDivElement>(null);
   const [qrGenerated, setQrGenerated] = useState(false);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      gsapAnimations.slideUp(containerRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (qrCardRef.current && qrGenerated) {
+      gsapAnimations.qrCodeReveal(qrCardRef.current);
+    }
+  }, [qrGenerated]);
+
+  useEffect(() => {
+    if (statusRef.current && paymentStatus === 'pending') {
+      gsapAnimations.pulseGlow(statusRef.current);
+    }
+  }, [paymentStatus]);
 
   // Generate PromptPay QR Code (simulated)
   const generateQRCode = async () => {
@@ -64,21 +91,21 @@ export function QRCodeDisplay({
         return {
           icon: Clock,
           label: 'รอการชำระเงิน',
-          className: 'status-pending pulse-glow',
+          className: 'status-pending',
           description: 'กรุณาสแกน QR Code เพื่อชำระเงิน'
         };
       case 'processing':
         return {
           icon: Clock,
           label: 'กำลังตรวจสอบการชำระเงิน',
-          className: 'status-pending pulse-glow',
+          className: 'status-pending',
           description: 'กำลังรอการยืนยันจากธนาคาร'
         };
       case 'completed':
         return {
           icon: CheckCircle,
           label: 'ชำระเงินสำเร็จ',
-          className: 'status-success bounce-in',
+          className: 'status-success',
           description: 'สามารถจ่ายน้ำมันได้แล้ว'
         };
       case 'failed':
@@ -102,7 +129,7 @@ export function QRCodeDisplay({
   const StatusIcon = statusConfig.icon;
 
   return (
-    <div className="space-y-6 slide-up">
+    <div ref={containerRef} className="space-y-6 opacity-0">
       {/* Header */}
       <div className="text-center">
         <div className="inline-flex items-center gap-3 mb-4">
@@ -111,19 +138,38 @@ export function QRCodeDisplay({
           </div>
           <h2 className="text-2xl font-bold text-foreground">สแกนเพื่อชำระเงิน</h2>
         </div>
-        <p className="text-lg font-semibold text-primary">
-          จำนวนเงิน: {amount.toLocaleString()} บาท
-        </p>
+        
+        {/* Enhanced Payment Summary */}
+        <div className="space-y-2">
+          {fuelType && (
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <span className="text-xl">{fuelType.icon}</span>
+              <span className="text-lg font-semibold">{fuelType.name}</span>
+            </div>
+          )}
+          <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
+            <div className="bg-primary/5 p-3 rounded-lg">
+              <p className="text-sm text-muted-foreground">จำนวนเงิน</p>
+              <p className="text-xl font-bold text-primary">{amount.toLocaleString()} บาท</p>
+            </div>
+            {liters && (
+              <div className="bg-primary/5 p-3 rounded-lg">
+                <p className="text-sm text-muted-foreground">ปริมาณน้ำมัน</p>
+                <p className="text-xl font-bold text-primary">{liters.toFixed(2)} ลิตร</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* QR Code Container */}
-      <Card className="qr-container max-w-sm mx-auto fade-in-scale">
+      <Card ref={qrCardRef} className="qr-container max-w-sm mx-auto opacity-0">
         <div className="text-center space-y-4">
           {qrGenerated ? (
             <div className="space-y-4">
               <canvas 
                 ref={canvasRef} 
-                className="mx-auto rounded-lg shadow-lg"
+                className="mx-auto rounded-lg shadow-lg transition-transform hover:scale-105 duration-300"
               />
               <div className="space-y-2">
                 <p className="text-sm font-medium text-foreground">สแกน QR Code ด้วยแอปธนาคาร</p>
@@ -141,7 +187,10 @@ export function QRCodeDisplay({
 
       {/* Status Display */}
       <div className="text-center space-y-4">
-        <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-full ${statusConfig.className}`}>
+        <div 
+          ref={statusRef}
+          className={`inline-flex items-center gap-2 px-6 py-3 rounded-full ${statusConfig.className}`}
+        >
           <StatusIcon className="w-5 h-5" />
           <span className="font-semibold">{statusConfig.label}</span>
         </div>
@@ -151,7 +200,7 @@ export function QRCodeDisplay({
         {/* Timer (only show for pending/processing) */}
         {(paymentStatus === 'pending' || paymentStatus === 'processing') && (
           <div className="space-y-2">
-            <div className="text-2xl font-mono font-bold text-warning">
+            <div className="text-2xl font-mono font-bold text-warning animate-pulse">
               {formatTime(timeRemaining)}
             </div>
             <p className="text-sm text-muted-foreground">เวลาที่เหลือสำหรับการชำระเงิน</p>
@@ -164,7 +213,7 @@ export function QRCodeDisplay({
         <Button
           variant="outline"
           onClick={onBack}
-          className="px-8 py-3 border-2"
+          className="px-8 py-3 border-2 transition-all hover:scale-105"
         >
           กลับไปเลือกจำนวนเงิน
         </Button>
@@ -172,7 +221,7 @@ export function QRCodeDisplay({
         {paymentStatus === 'failed' && onRetry && (
           <Button
             onClick={onRetry}
-            className="px-8 py-3 fuel-button"
+            className="px-8 py-3 fuel-button transition-all hover:scale-105"
           >
             <RotateCcw className="w-4 h-4 mr-2" />
             ลองใหม่

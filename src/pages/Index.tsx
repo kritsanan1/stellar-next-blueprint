@@ -12,6 +12,8 @@ type AppStep = 'amount-selection' | 'payment' | 'success';
 const Index = () => {
   const [currentStep, setCurrentStep] = useState<AppStep>('amount-selection');
   const [selectedAmount, setSelectedAmount] = useState<number>(0);
+  const [selectedFuelType, setSelectedFuelType] = useState<FuelType | undefined>();
+  const [selectedLiters, setSelectedLiters] = useState<number | undefined>();
   
   const { 
     session, 
@@ -22,8 +24,10 @@ const Index = () => {
     clearSession 
   } = usePaymentSession();
 
-  const handleAmountSelect = (amount: number) => {
+  const handleAmountSelect = (amount: number, fuelType?: FuelType, liters?: number) => {
     setSelectedAmount(amount);
+    setSelectedFuelType(fuelType);
+    setSelectedLiters(liters);
   };
 
   const handleProceedToPayment = () => {
