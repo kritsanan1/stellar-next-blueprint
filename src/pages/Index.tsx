@@ -1,74 +1,74 @@
-import { useState } from 'react';
 import { FuelStationHeader } from '@/components/FuelStationHeader';
 import { FuelAmountSelector } from '@/components/FuelAmountSelector';
 import { QRCodeDisplay } from '@/components/QRCodeDisplay';
 import { PaymentSuccess } from '@/components/PaymentSuccess';
-import { usePaymentSession } from '@/hooks/usePaymentSession';
 import { Button } from '@/components/ui/button';
 import { Home } from 'lucide-react';
 import { FuelType } from '@/types/fuel';
+import { FuelStationProvider, useFuelStationContext } from '@/context/FuelStationContext';
+import { usePaymentFlow } from '@/hooks/usePaymentFlow';
+import { useFuelCalculation } from '@/hooks/useFuelCalculation';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
-type AppStep = 'amount-selection' | 'payment' | 'success';
-
+// Main app component wrapped with context
 const Index = () => {
-  const [currentStep, setCurrentStep] = useState<AppStep>('amount-selection');
-  const [selectedAmount, setSelectedAmount] = useState<number>(0);
-  const [selectedFuelType, setSelectedFuelType] = useState<FuelType | undefined>();
-  const [selectedLiters, setSelectedLiters] = useState<number | undefined>();
-  
-  const { 
-    session, 
-    timeRemaining, 
-    dispensingStatus, 
-    createSession, 
-    retryPayment, 
-    clearSession 
-  } = usePaymentSession();
+  return (
+    <ErrorBoundary>
+      <FuelStationProvider>
+        <FuelStationApp />
+      </FuelStationProvider>
+    </ErrorBoundary>
+  );
+};
+
+// Actual app logic component
+const FuelStationApp = () => {
+  const { state, dispatch } = useFuelStationContext();
+  const { createPaymentSession, retryPayment, clearSession, isLoading } = usePaymentFlow();
+  const { selectAmount } = useFuelCalculation();
 
   const handleAmountSelect = (amount: number, fuelType?: FuelType, liters?: number) => {
-    setSelectedAmount(amount);
-    setSelectedFuelType(fuelType);
-    setSelectedLiters(liters);
+    selectAmount(amount, fuelType, liters);
   };
 
-  const handleProceedToPayment = () => {
-    if (selectedAmount > 0) {
-      createSession(selectedAmount);
-      setCurrentStep('payment');
+  const handleProceedToPayment = async () => {
+    if (state.selectedAmount > 0) {
+      await createPaymentSession(state.selectedAmount);
     }
   };
 
   const handleBackToAmountSelection = () => {
     clearSession();
-    setCurrentStep('amount-selection');
-    setSelectedAmount(0);
+    dispatch({ type: 'SET_STEP', step: 'amount-selection' });
+    dispatch({ type: 'SELECT_AMOUNT', amount: 0 });
   };
 
-  const handleRetryPayment = () => {
-    if (retryPayment()) {
-      // Payment session recreated, stay on payment step
-    }
-  };
-
-  const handlePaymentComplete = () => {
-    setCurrentStep('success');
+  const handleRetryPayment = async () => {
+    await retryPayment();
   };
 
   const handleNewTransaction = () => {
     clearSession();
-    setCurrentStep('amount-selection');
-    setSelectedAmount(0);
+    dispatch({ type: 'RESET_STATE' });
   };
 
   const handleGoHome = () => {
     clearSession();
-    setCurrentStep('amount-selection');
-    setSelectedAmount(0);
+    dispatch({ type: 'RESET_STATE' });
   };
 
-  // Auto advance to success when payment is completed
-  if (session?.status === 'completed' && currentStep === 'payment') {
-    handlePaymentComplete();
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
+          <FuelStationHeader />
+          <div className="mt-8">
+            <LoadingSpinner size="lg" text="กำลังประมวลผล..." />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -79,43 +79,53 @@ const Index = () => {
 
         {/* Main Content */}
         <div className="space-y-8">
-          {currentStep === 'amount-selection' && (
+          {state.currentStep === 'amount-selection' && (
             <>
               <FuelAmountSelector
                 onAmountSelect={handleAmountSelect}
-                selectedAmount={selectedAmount}
+                selectedAmount={state.selectedAmount}
               />
               
-              {selectedAmount > 0 && (
+              {state.selectedAmount > 0 && (
                 <div className="text-center bounce-in">
                   <Button
                     onClick={handleProceedToPayment}
                     size="lg"
                     className="payment-button text-lg px-12 py-6"
+                    disabled={isLoading}
                   >
-                    ดำเนินการชำระเงิน
+                    {isLoading ? (
+                      <>
+                        <LoadingSpinner size="sm" className="mr-2" />
+                        กำลังสร้าง QR Code...
+                      </>
+                    ) : (
+                      'ดำเนินการชำระเงิน'
+                    )}
                   </Button>
                 </div>
               )}
             </>
           )}
 
-          {currentStep === 'payment' && session && (
+          {state.currentStep === 'payment' && state.paymentSession && (
             <QRCodeDisplay
-              amount={session.amount}
-              sessionId={session.id}
-              paymentStatus={session.status}
-              timeRemaining={timeRemaining}
+              amount={state.paymentSession.amount}
+              fuelType={state.selectedFuelType}
+              liters={state.selectedLiters}
+              sessionId={state.paymentSession.id}
+              paymentStatus={state.paymentSession.status}
+              timeRemaining={state.timeRemaining}
               onBack={handleBackToAmountSelection}
               onRetry={handleRetryPayment}
             />
           )}
 
-          {currentStep === 'success' && session && (
+          {state.currentStep === 'success' && state.paymentSession && (
             <PaymentSuccess
-              amount={session.amount}
-              sessionId={session.id}
-              dispensingStatus={dispensingStatus}
+              amount={state.paymentSession.amount}
+              sessionId={state.paymentSession.id}
+              dispensingStatus={state.dispensingStatus}
               onNewTransaction={handleNewTransaction}
               onHome={handleGoHome}
             />

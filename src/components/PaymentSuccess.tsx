@@ -6,7 +6,7 @@ import { CheckCircle, Fuel, RotateCcw, Home } from 'lucide-react';
 interface PaymentSuccessProps {
   amount: number;
   sessionId: string;
-  dispensingStatus: 'waiting' | 'dispensing' | 'completed';
+  dispensingStatus: 'waiting' | 'dispensing' | 'completed' | 'error';
   onNewTransaction: () => void;
   onHome: () => void;
 }
@@ -48,6 +48,8 @@ export function PaymentSuccess({
         return 'กำลังจ่ายน้ำมัน กรุณารอสักครู่...';
       case 'completed':
         return 'จ่ายน้ำมันเสร็จสิ้น ขอบคุณที่ใช้บริการ';
+      case 'error':
+        return 'เกิดข้อผิดพลาดในการจ่ายน้ำมัน กรุณาติดต่อเจ้าหน้าที่';
       default:
         return 'กำลังเตรียมระบบ';
     }

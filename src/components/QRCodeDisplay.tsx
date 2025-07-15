@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { QrCode, Clock, CheckCircle, AlertCircle, RotateCcw } from 'lucide-react';
 import { FuelType } from '@/types/fuel';
+import { PaymentStatus } from '@/services/PaymentService';
 import { gsapAnimations } from '@/lib/animations';
 
 interface QRCodeDisplayProps {
@@ -11,7 +12,7 @@ interface QRCodeDisplayProps {
   fuelType?: FuelType;
   liters?: number;
   sessionId: string;
-  paymentStatus: 'pending' | 'processing' | 'completed' | 'failed';
+  paymentStatus: PaymentStatus;
   timeRemaining: number;
   onBack: () => void;
   onRetry?: () => void;
@@ -114,6 +115,13 @@ export function QRCodeDisplay({
           label: 'การชำระเงินล้มเหลว',
           className: 'bg-destructive text-destructive-foreground',
           description: 'กรุณาลองใหม่อีกครั้ง'
+        };
+      case 'expired':
+        return {
+          icon: AlertCircle,
+          label: 'หมดเวลาชำระเงิน',
+          className: 'bg-destructive text-destructive-foreground',
+          description: 'กรุณาเริ่มการชำระเงินใหม่'
         };
       default:
         return {
