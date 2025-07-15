@@ -6,6 +6,7 @@ import { PaymentSuccess } from '@/components/PaymentSuccess';
 import { usePaymentSession } from '@/hooks/usePaymentSession';
 import { Button } from '@/components/ui/button';
 import { Home } from 'lucide-react';
+import { FuelType } from '@/types/fuel';
 
 type AppStep = 'amount-selection' | 'payment' | 'success';
 
